@@ -197,15 +197,19 @@ export function CompleteForm() {
             <Image source={{ uri: file.uri }} style={styles.filePreview} />
           ) : null}
           <Text style={styles.fileName}>Selected: {file.name}</Text>
-          
-          {/* Button to open Modal */}
-          {file.type === 'image' && (
-            <Button title="Preview Image in Modal" onPress={() => setShowModal(true)} />
-          )}
-
           <Button title="Remove" color="red" onPress={() => setFile(null)} />
         </View>
       )}
+
+      {/* Button to open Modal with Image */}
+      <Text style={styles.label}>Modal with Image:</Text>
+      <View style={{ marginVertical: 6 }}>
+        <Button
+          title="Show Modal Containing Image"
+          color="#6366f1"
+          onPress={() => setShowModal(true)}
+        />
+      </View>
 
       {/* Modal containing Image */}
       <Modal
@@ -215,11 +219,21 @@ export function CompleteForm() {
         onRequestClose={() => setShowModal(false)}>
         <View style={styles.modalOverlay}>
           <View style={styles.modalContent}>
+            <Text style={{ fontFamily: 'Urbanist', fontSize: 18, fontWeight: 'bold', marginBottom: 10 }}>
+              Image in Modal
+            </Text>
             <Image
-              source={{ uri: file?.uri || 'https://reactnative.dev/img/tiny_logo.png' }}
+              source={
+                file?.uri && file.type === 'image'
+                  ? { uri: file.uri }
+                  : require('@/assets/images/react-logo.png')
+              }
               style={styles.modalImage}
               resizeMode="contain"
             />
+            <Text style={{ fontFamily: 'Urbanist', fontSize: 13, color: '#555', marginVertical: 8 }}>
+              {file?.name ? `Showing: ${file.name}` : 'Showing: React Native Logo'}
+            </Text>
             <Button title="Close Modal" onPress={() => setShowModal(false)} />
           </View>
         </View>
